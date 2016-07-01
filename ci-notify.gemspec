@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Matthias Viehweger"]
   spec.email         = ["kronn@kronn.de"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Send a short notification from Jenkins to IRC}
+  spec.description   = %q{With the new Jenkinsfile-approach, I wanted a small script to send notifications to IRC. Since most of the information comes from env-vars supplied by Jenkins, this is a very generic script. Packaging this a gem enables proper dependency management.}
+  spec.homepage      = "https://github.com/kronn/ci-notify"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
