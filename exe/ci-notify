@@ -1,3 +1,75 @@
 #!/usr/bin/env ruby
 
-require "ci/notify"
+# require "ci/notify"
+
+@dry_run    = ENV["DRY_RUN"] || false
+@branch     = ENV["BRANCH_NAME"]
+@build_url  = ENV["BUILD_URL"]
+@result     = ARGV[0]
+
+@job_name   = ENV["JOB_NAME"] || "CI-job"
+@job_number = ENV["BUILD_NUMBER"]
+@bot_name   = %w[ Jenkline Pipekins ].sample
+
+@irc_server = ENV["IRC_SERVER"] || "chat.freenode.net"
+@irc_port   = ENV["IRC_PORT"] || 6667
+@irc_channel= ENV["IRC_CHANNEL"] || raise ArgumentError, "you have to specify the IRC_CHANNEL"
+
+@job_name = @job_name.split("/")[0] if @branch && @job_name.gsub("%2F", "/").include?(@branch)
+
+@local_echo = Object.new
+def @local_echo.say(message)
+  puts "IRC: " + message
+end
+
+def irc
+  if @dry_run
+    yield @local_echo
+  else
+    begin
+      require "shout-bot"
+      ShoutBot.new(@irc_server, @irc_port, @bot_name) do |irc|
+        irc.channel = @irc_channel
+        yield irc
+      end
+    rescue Errno::ENETUNREACH => e
+      yield @local_echo
+
+      $stderr.puts "Error: #{e.class}"
+      $stderr.puts "       #{e.message}"
+    end
+  end
+end
+
+def color(string, color)
+  return string if @dry_run
+
+  require "string-irc"
+  StringIrc.new(string).send(color).bold.to_s
+end
+
+irc do |channel|
+  branch_info = "for #{@branch}"  if @branch
+  job_info    = "##{@job_number}" if @job_number
+  build_url   = "(#{@build_url})" if @build_url
+
+  if @result && @result != "null"
+    result_color = case @result
+                   when "SUCCESS" then :green
+                   when "FAILURE" then :red
+                   else                :white
+                   end
+    result_info = "with #{color(@result, result_color)}"
+  end
+
+  message = [
+    @job_name,
+    job_info,
+    "completed",
+    branch_info,
+    result_info,
+    build_url,
+  ].compact.join(" ")
+
+  channel.say message
+end
