@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Send a short notification from Jenkins to IRC}
   spec.description   = %q{With the new Jenkinsfile-approach, I wanted a small script to send notifications to IRC. Since most of the information comes from env-vars supplied by Jenkins, this is a very generic script. Packaging this a gem enables proper dependency management.}
-  spec.homepage      = "https://github.com/kronn/ci-notify"
+  spec.homepage      = "https://git.lanpartei.de/kronn/ci-notify"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
