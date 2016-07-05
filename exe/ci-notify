@@ -57,9 +57,10 @@ irc do |channel|
 
   if @result && @result != "null"
     result_color = case @result
-                   when "SUCCESS" then :green
-                   when "FAILURE" then :red
-                   else                :white
+                   when "SUCCESS"  then :green
+                   when "UNSTABLE" then :yellow
+                   when "FAILURE"  then :red
+                   else                 :white
                    end
     result_info = "with #{color(@result, result_color).bold}"
   end
