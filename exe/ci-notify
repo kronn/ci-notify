@@ -11,9 +11,11 @@
 @job_number = ENV["BUILD_NUMBER"]
 @bot_name   = %w[ Jenkline Pipekins ].sample
 
-@irc_server = ENV["IRC_SERVER"] || "chat.freenode.net"
-@irc_port   = ENV["IRC_PORT"] || 6667
-@irc_channel= ENV["IRC_CHANNEL"] || raise ArgumentError, "you have to specify the IRC_CHANNEL"
+unless @dry_run
+  @irc_server = ENV["IRC_SERVER"] || "chat.freenode.net"
+  @irc_port   = ENV["IRC_PORT"] || 6667
+  @irc_channel= ENV.fetch("IRC_CHANNEL")
+end
 
 @job_name = @job_name.split("/")[0] if @branch && @job_name.gsub("%2F", "/").include?(@branch)
 
