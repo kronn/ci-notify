@@ -43,6 +43,16 @@ def irc
   end
 end
 
+# only really needed in dry-run
+module BoldString
+  refine String do
+    def bold
+      self
+    end
+  end
+end
+using BoldString
+
 def color(string, color)
   return string if @dry_run
 
