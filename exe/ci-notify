@@ -51,7 +51,7 @@ def color(string, color)
 end
 
 irc do |channel|
-  branch_info = "for #{@branch}"  if @branch
+  branch_info = "for #{color(@branch, :purple)}" if @branch
   job_info    = "##{@job_number}" if @job_number
   build_url   = "(#{@build_url})" if @build_url
 
