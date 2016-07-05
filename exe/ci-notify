@@ -47,7 +47,7 @@ def color(string, color)
   return string if @dry_run
 
   require "string-irc"
-  StringIrc.new(string).send(color).bold.to_s
+  StringIrc.new(string).send(color)
 end
 
 irc do |channel|
@@ -61,7 +61,7 @@ irc do |channel|
                    when "FAILURE" then :red
                    else                :white
                    end
-    result_info = "with #{color(@result, result_color)}"
+    result_info = "with #{color(@result, result_color).bold}"
   end
 
   message = [
